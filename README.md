@@ -1,51 +1,19 @@
-# webCamEmocognizer
-A cool emotion detector using your laptop/desktop webcam.
-
-The data for this work is taken from the kaggle competiotion: 
-Challenges in Representation Learning: Facial Expression Recognition Challenge https://www.kaggle.com/c/challenges-in-representation-learning-facial-expression-recognition-challenge
-
-The dataset provided in the competion consists of gray scale images which are 48 x 48 in dimension and the corresponding labels consisting of 7 emotions.
-
-We are using a simple convolution neural network to classify the images.
-
-Then, we are using opencv to extract 48 x 48 dimension images using the webcam and classifying them using our model.
+# Itinerary Planner
+An interactive website that can help tourists efficiently plan their trip by optimising various factors that can affect their trip like cost, distance, reviews about the place. The facial expressions of the user are recorded using the Web Camera on their PC/Laptop and makes decisions based on the expressions on whether one likes the destination/tourist attractions or not. Keeping in mind the user preferences and user specifications on the number of days of stay, budget etc. an itenary is planned and presented to the user. An automated chat bot is incorporated in an interactive manner that assis the user duing his entire trip period.
 
 # Requirements
 
-The code is written in python 2.7.9 </br>
-Keras (1.2.1) </br>
+The code is written in python</br>
+Keras </br>
 numpy </br>
 pandas </br>
-theano (0.8.2) </br>
-cv2 (1.0) </br>
+tensorflow </br>
+cv2 </br>
+googlemaps </br>
 
-# Data
-The data consists of scaled images from the kaggle competion kept in the data folder and also the labels in .npy format.
 
-# Training and running the tool
+# Steps to run from command line
 
-To train using the data, use the script trainCNN.py </br>
-Firstly, create the image data scaled, run the script </br>
-python ./genScaledDat.py </br>
-check if the file Scaled.bin.npy is generated in the data folder. </br>
-Then run the following: </br>
-python ./trainCNN.py
-
-to run the detection using the training models run:</br>
-python ./DetectEmotion.py
-
-# Sample
-Here's a snapshot from the application:</br>
-</br>
-![](https://github.com/DeepInEvil/webCamEmocognizer/blob/master/gif/optimised.gif)
-# Todos
-play around with the hyperparameters to get the best model.
-
-# N.B.
-This project was part of my Master's thesis, the thesis is also added in the documents folder.
-
-# References:
-Alex Krizhevsky, Ilya Sutskever, Geoffrey E. Hinton. ImageNet Classification with Deep Convolutional Neural Networks. <br />
-Shima Alizadeh, Azar Fazel. Convolutional Neural Networks for Facial Expression Recognition. <br />
-https://codeplasma.com/2012/12/03/getting-webcam-images-with-python-and-opencv-2-for-real-this-time/
-
+1. Install all dependencies
+2. Go to root directory of the repository
+3. Run command "python deploy.py"

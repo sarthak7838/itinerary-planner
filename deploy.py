@@ -8,6 +8,7 @@ from threading import Thread
 from DetectEmotion import func, stop_thread, start_thread, change_active, finaldata, clean
 from graph import grph, suggest
 import os
+import requests
 event=1
 app = Flask(__name__)
 
@@ -22,6 +23,31 @@ thread1=Thread(target=func,args=())
 
 start=1
 welcome=0
+
+time=-1
+budget=-1
+def whenclickplanitinerary():
+    headers = {
+    'Authorization': 'Bearer ac36ea3d844d4145aa2e7d71854a5c64',
+    }
+
+    params = (
+    ('v', '20170712'),
+    ('e', 'custom_event'),
+    ('timezone', 'Asia/Calcutta\''),
+    ('lang', 'en'),
+    ('sessionId', '1234567890'),
+    )
+    response = requests.get('https://api.dialogflow.com/v1/query', headers=headers, params=params)
+    data = response.json()
+    listtohtml=[]
+    param=data.get("result").get("parameters")
+
+    for i in data['result']['fulfillment']['messages']:
+        listtohtml.append(i['speech'])
+    num=len(listtohtml)
+    return num,listtohtml
+
 
 def todiagflow():
     headers = {
@@ -39,13 +65,14 @@ def todiagflow():
     response = requests.get('https://api.dialogflow.com/v1/query', headers=headers, params=params)
     data = response.json()
     listtohtml=[]
-    
+
     for i in data['result']['fulfillment']['messages']:
         listtohtml.append(i['speech'])
     num=len(listtohtml)
     return num,listtohtml
 
 def respond_to_query(s):
+    global time,budget
     headers = {
     'Authorization': 'Bearer ac36ea3d844d4145aa2e7d71854a5c64',
     }
@@ -60,19 +87,40 @@ def respond_to_query(s):
 
     response = requests.get('https://api.dialogflow.com/v1/query', headers=headers, params=params)
     data=response.json()
+
+    param=data.get("result").get("parameters")
+
+    #for getting budget
+    if 'unit-currency' in param:
+        budget=param['unit-currency']['amount']
+        print(budget)
+
+
+    #for getting time
+    if 'duration' in param:
+        time=param['duration']['amount']
+        print(time)
     listtohtml=[]
     for i in data['result']['fulfillment']['messages']:
         listtohtml.append(i['speech'])
     num=len(listtohtml)
     return num,listtohtml
 
+
 @app.route('/',methods=['POST','GET'])
 def main():
     start_thread()
     global thread1
+    global welcome
+    num,listtohtml=todiagflow()
+    print(listtohtml)
+    if welcome==1:
+        num=0
+    else:
+        welcome=1
     if thread1.isAlive()==False:
         thread1.start()
-    return render_template("index.html")
+    return render_template("index.html",bot_string=listtohtml,bot_number=num)
 
 @app.route('/background',methods=['POST','GET'])
 def a():
@@ -102,7 +150,6 @@ def b():
 @app.route('/stopcam',methods=['GET'])
 def c():
     stop_thread()
-    print("please")
     data = int(request.args.get('data'))
     sec_no=int(data/10)
     slide_no=data%10
