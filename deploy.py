@@ -95,7 +95,6 @@ def respond_to_query(s):
         budget=param['unit-currency']['amount']
         print(budget)
 
-
     #for getting time
     if 'duration' in param:
         time=param['duration']['amount']
@@ -138,14 +137,39 @@ def b():
         prob=finaldata()
         #print(prob)
         res=suggest(prob)
-        res1=grph(res['sugg_cities'],7,res['pref'])
+        res1=grph(res['sugg_cities'],time,res['pref'])
         print(res1['daycnt'])
         return render_template("dir.html",fixedpts=res1['fixedpts'],waypts=res1['waypts'],daycnt=res1['daycnt'])
-    else:
-        data=request.get_json()
-        print(data['val'])
-        res=grph([0,1,2,3,4])
-        return render_template("dir.html",fixedpts=res['fixedpts'],waypts=res['waypts'])
+
+@app.route('/planit',methods=['GET'])
+def planit():
+    stop_thread()
+    headers = {
+    'Authorization': 'Bearer ac36ea3d844d4145aa2e7d71854a5c64',
+    }
+
+    params = (
+    ('v', '20170712'),
+    ('e', 'custom_event'),
+    ('timezone', 'Asia/Calcutta\''),
+    ('lang', 'en'),
+    ('sessionId', '1234567890'),
+    )
+    response = requests.get('https://api.dialogflow.com/v1/query', headers=headers, params=params)
+    data = response.json()
+    listtohtml=[]
+    param=data.get("result").get("parameters")
+
+    for i in data['result']['fulfillment']['messages']:
+        listtohtml.append(i['speech'])
+    num=len(listtohtml)
+
+    data = int(request.args.get('data'))
+    sec_no=int(data/10)
+    slide_no=data%10
+    change_active(sec_no,slide_no)
+
+    return jsonify({'bot_number':num,'bot_string':listtohtml})
 
 @app.route('/stopcam',methods=['GET'])
 def c():
@@ -191,52 +215,6 @@ def sss():
      }
     # res=json.dumps(res)
     return jsonify(res)
-
-@app.route('/webhook', methods=['POST'])
-def webhook():
-    if(event==1):
-        req = request.get_json(silent=True, force=True)
-
-
-        if(req.get("result").get("action")=="ask_time"):
-
-            param=req.get("result").get("parameters")
-            print(param['unit-currency']['amount'])
-        elif(req.get("result").get("action")=="thank"):
-            param=req.get("result").get("parameters")
-            print(param['duration']['amount'])
-        res = {
-        "followupEvent": {
-        "name": "custom_event",
-        "data": {
-      }
-   }
-}
-
-        res = json.dumps(res, indent=4)
-        # print(res)
-        r = make_response(res)
-        r.headers['Content-Type'] = 'application/json'
-        return r
-    else:
-        req = request.get_json(silent=True, force=True)
-
-
-        if(req.get("result").get("action")=="ask_time"):
-
-            param=req.get("result").get("parameters")
-            print(param['unit-currency']['amount'])
-        elif(req.get("result").get("action")=="thank"):
-            param=req.get("result").get("parameters")
-            print(param['duration']['amount'])
-        res = {}
-
-        res = json.dumps(res, indent=4)
-        # print(res)
-        r = make_response(res)
-        r.headers['Content-Type'] = 'application/json'
-        return r
-
 
 
 

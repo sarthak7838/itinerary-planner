@@ -36,7 +36,7 @@
     #user_inp{
         margin-top: 5px;
         margin-left:5px;
-        width:120px;
+        width:150px;
         background-color:#e6eaf2;
         color:black;
         position: relative;
@@ -48,7 +48,7 @@
     #bot_inp{
         margin-top: 5px;
         margin-right:5px;
-        width:120px;
+        width:150px;
         background-color: green;
         color:black;
         border-radius: 10%;
@@ -65,13 +65,40 @@
     </head>
     <body>
         <script type=text/javascript>
+          var scrolled=0;
             $(function() {
                     $('#plan').bind('click', function() {
                             var index = $('.fp-section.active').index();
                             var slideIndex = $('.fp-section.active').find('.slide.active').index();
-                            $.getJSON('/stopcam', {
+                            $.getJSON('/planit', {
                                 data: ''+ (index*10+slideIndex)
                                 }, function(data) {
+
+                              var msgs=document.getElementById('msgs');
+                              var bn,bs;
+                              bn=data.bot_number;
+                              bs=data.bot_string;
+
+                               for(var i=0;i<bn;i++)
+                                {
+                                  var cont=document.createElement('div');
+                                  cont.id="cont";
+                                  var ele2=document.createElement('p');
+                                  ele2.id="bot_inp";
+                                  var text2=document.createTextNode(bs[i]);
+                                  ele2.appendChild(text2);
+                                  document.body.appendChild(ele2);
+                                  cont.appendChild(ele2);
+                                  document.body.appendChild(cont)
+                                  msgs.appendChild(cont);
+                                  // document.body.appendChild(cont);
+                                  // cont.appendChild(ele2);
+                                }
+                                scrolled=scrolled+500;
+
+                                $(".chatbox").animate({
+                                    scrollTop:  scrolled
+                                });
                         });
                     });
             });
@@ -90,21 +117,102 @@
                             $.getJSON('/plan', {
                                     data: '2'
                                     }, function(data) {
-                            });/*
-                             $.ajax({
-                                    type : "POST",
-                                    url : '/plan',
-                                    data: JSON.stringify({'val':3}),
-                                    contentType: 'application/json;charset=UTF-8',
-                                    success: function(result) {
-                                            console.log(result);
-                                    }
-                               });*/
+                            });
                             });
                             //window.location="https://localhost:5000/plan"
                     });
-    </script>
+  
+      $(function(){
 
+      var inp= document.getElementById('inp');
+      var send=document.getElementById('send_btn');
+      var msgs=document.getElementById('msgs');
+      // var bot=document.getElementById('bot');
+        var text=inp.value;
+        var bn,bs;
+        bn={{bot_number|safe}};
+        bs={{bot_string|safe}};
+
+
+
+         for(var i=0;i<bn;i++)
+          {
+            var cont=document.createElement('div');
+            cont.id="cont";
+            var ele2=document.createElement('p');
+            ele2.id="bot_inp";
+            var text2=document.createTextNode(bs[i]);
+            ele2.appendChild(text2);
+            document.body.appendChild(ele2);
+            cont.appendChild(ele2);
+            document.body.appendChild(cont)
+            msgs.appendChild(cont);
+            // document.body.appendChild(cont);
+            // cont.appendChild(ele2);
+          }
+
+        });
+      $(function(){
+
+        var bn,bs;
+        $("#inp").keyup(function(event) {
+              if (event.keyCode === 13) {
+                  $("#send_btn").click();
+              }
+          });
+        $('#send_btn').bind('click', function() {
+
+          var cont=document.createElement('div');
+          cont.id="cont";
+
+          var ele=document.createElement('p');
+          ele.id="user_inp";
+          var text=document.createTextNode(inp.value);
+          ele.appendChild(text);
+          document.body.appendChild(ele);
+          cont.appendChild(ele);
+          document.body.appendChild(cont);
+          msgs.appendChild(cont);
+          var scrolled=0;
+            scrolled=scrolled+500;
+
+            $(".chatbox").animate({
+                scrollTop:  scrolled
+            });
+
+
+          $.getJSON('/sss', {
+                      data: inp.value
+                      }, function(data) {
+                        bn=data.bot_number;
+                        bs=data.bot_string;
+                        console.log(bn);
+                        for(var i=0;i<bn;i++)
+                        {
+                          var cont=document.createElement('div');
+                          cont.id="cont";
+                          var ele2=document.createElement('p');
+                          ele2.id="bot_inp";
+                          var text2=document.createTextNode(bs[i]);
+                          ele2.appendChild(text2);
+                          document.body.appendChild(ele2);
+                          cont.appendChild(ele2);
+                          document.body.appendChild(cont);
+                          msgs.appendChild(cont);
+
+                        }
+                          scrolled=scrolled+500;
+
+                          $(".chatbox").animate({
+                              scrollTop:  scrolled
+                          });
+          });
+          inp.value="";
+
+      });
+
+    });
+    </script>
         <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top ">
             <a class="navbar-brand" href="#">Rajasthan</a>
 
@@ -411,98 +519,6 @@
     });
 
     </script>
-    <script>
-
-      $(function(){
-
-      var inp= document.getElementById('inp');
-      var send=document.getElementById('send_btn');
-      var msgs=document.getElementById('msgs');
-      // var bot=document.getElementById('bot');
-        var text=inp.value;
-        var bn,bs;
-        bn={{bot_number|safe}};
-        bs={{bot_string|safe}};
-
-
-
-         for(var i=0;i<bn;i++)
-          {
-            var cont=document.createElement('div');
-            cont.id="cont";
-            var ele2=document.createElement('p');
-            ele2.id="bot_inp";
-            var text2=document.createTextNode(bs[i]);
-            ele2.appendChild(text2);
-            document.body.appendChild(ele2);
-            cont.appendChild(ele2);
-            document.body.appendChild(cont)
-            msgs.appendChild(cont);
-            // document.body.appendChild(cont);
-            // cont.appendChild(ele2);
-          }
-
-        });
-      $(function(){
-
-        var bn,bs;
-        $("#inp").keyup(function(event) {
-              if (event.keyCode === 13) {
-                  $("#send_btn").click();
-              }
-          });
-        $('#send_btn').bind('click', function() {
-
-          var cont=document.createElement('div');
-          cont.id="cont";
-
-          var ele=document.createElement('p');
-          ele.id="user_inp";
-          var text=document.createTextNode(inp.value);
-          ele.appendChild(text);
-          document.body.appendChild(ele);
-          cont.appendChild(ele);
-          document.body.appendChild(cont);
-          msgs.appendChild(cont);
-          var scrolled=0;
-            scrolled=scrolled+500;
-
-            $(".chatbox").animate({
-                scrollTop:  scrolled
-            });
-
-
-          $.getJSON('/sss', {
-                      data: inp.value
-                      }, function(data) {
-                        bn=data.bot_number;
-                        bs=data.bot_string;
-                        console.log(bn);
-                        for(var i=0;i<bn;i++)
-                        {
-                          var cont=document.createElement('div');
-                          cont.id="cont";
-                          var ele2=document.createElement('p');
-                          ele2.id="bot_inp";
-                          var text2=document.createTextNode(bs[i]);
-                          ele2.appendChild(text2);
-                          document.body.appendChild(ele2);
-                          cont.appendChild(ele2);
-                          document.body.appendChild(cont);
-                          msgs.appendChild(cont);
-
-                        }
-                        var scrolled=0;
-                          scrolled=scrolled+500;
-
-                          $(".chatbox").animate({
-                              scrollTop:  scrolled
-                          });
-          });
-
-      });
-
-    });
-    </script>
+    
     </body>
     </html>
