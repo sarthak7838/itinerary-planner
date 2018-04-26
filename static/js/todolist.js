@@ -6,7 +6,7 @@ function del(el)
             var id =$(el).parent().parent().parent().attr('id');
             taskarray[id].keep=0;
             $(el).parent().parent().parent().remove();
-            localStorage.setItem('data',JSON.stringify(taskarray));
+            //localStorage.setItem('data',JSON.stringify(taskarray));
 }
 function check(el)
 {
@@ -26,7 +26,7 @@ function check(el)
               result2.append(`<div class="cont" id=${id}><div id="task"><input class="tick" type="checkbox" onclick="uncheck(this)"><div class="yo"> <input class="para" type="text" disabled="true" value="`+value+`">
                             <span id="sp"><button class="btn btn-dark" id="update_btn" onclick="update(this)" >UPDATE TASK</button><button class="btn btn-success" id="confirm_btn" disabled>CONFIRM</button><button class="btn btn-danger" id="del_btn" onclick="del(this)" >DELETE TASK</button></span></div></div></div>`);
             }
-            localStorage.setItem('data',JSON.stringify(taskarray));
+            //localStorage.setItem('data',JSON.stringify(taskarray));
 }
 function uncheck(el)
 {
@@ -45,7 +45,7 @@ function uncheck(el)
               result.append(`<div class="cont" id=${id}><div id="task"><input class="tick" type="checkbox" onclick="check(this)"> <input class="para" type="text" disabled="true" value="`+value+`">
                             <span id="sp"><button class="btn btn-dark" id="update_btn" onclick="update(this)" >UPDATE TASK</button><button class="btn btn-success" id="confirm_btn" disabled>CONFIRM</button><button class="btn btn-danger" id="del_btn" onclick="del(this)" >DELETE TASK</button></span></div></div>`);
             }
-            localStorage.setItem('data',JSON.stringify(taskarray));
+            //localStorage.setItem('data',JSON.stringify(taskarray));
 }
 
 function update(el)
@@ -60,21 +60,25 @@ function update(el)
                var val=$(el).parent().prev().val();
                taskarray[id].name=val;
                $(el).parent().prev().prop('value',val);
-               localStorage.setItem('data',JSON.stringify(taskarray));
+               //localStorage.setItem('data',JSON.stringify(taskarray));
              });
 
 }
 
 $(document).ready(function(){
-              taskarray = JSON.parse(localStorage.getItem('data')) || [] ;
+              //taskarray = JSON.parse(localStorage.getItem('data')) || [] ;
+              //taskarray=[];
               var inp=$('#inp');
               var add_btn=$('#add_btn');
               var result=$('#result');
               var result2=$('#result2');
-              var done=0;
-              if(done==0){
+            //  var done=0;
+            //  if(done==0){
+                  //console.log(courses.length);
+                  //display();
               for(var i=0;i<courses.length;i++)
               {
+
                 var val=courses[i];
                 var task={
                           name:val,
@@ -89,11 +93,11 @@ $(document).ready(function(){
                         inp.val("");
                         counter++;
                       //  localStorage.setItem('counter',JSON.stringify(counter));
-                        localStorage.setItem('data',JSON.stringify(taskarray));
+                        //localStorage.setItem('data',JSON.stringify(taskarray));
               }
-              done=1;
-            }
-              display();
+              //done=1;
+            //}
+
 
               $("#inp").keyup(function(event) {
                    if (event.keyCode === 13) {
@@ -118,7 +122,7 @@ $(document).ready(function(){
                         inp.val("");
                         counter++;
                       //  localStorage.setItem('counter',JSON.stringify(counter));
-                        localStorage.setItem('data',JSON.stringify(taskarray));
+                        //localStorage.setItem('data',JSON.stringify(taskarray));
                       }
                       else{
                         alert("Please enter the Task name!!")

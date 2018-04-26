@@ -24,7 +24,8 @@ import googlemaps
 city=""
 checkin=""
 checkouts=""
-
+interest=""
+duration=0
 
 budget=-1
 time=-1
@@ -34,7 +35,7 @@ time=-1
 # api-endpoint
 #URL = "https://api.sandbox.amadeus.com/v1.2/flights/extensive-search"
 def call_hotel():
-	global city,checkin,checkout
+	global city,checkin,checkout,interest,duration
 	URL = "https://api.sandbox.amadeus.com/v1.2/hotels/search-circle"
 	 
 	# location given here
@@ -115,7 +116,7 @@ app = Flask(__name__)
 
 @app.route('/webhook', methods=['POST'])
 def webhook():
-	global city,checkin,checkout,time,budget
+	global city,checkin,checkout,time,budget,duration,interest
 	
 
 	req = request.get_json(silent=True, force=True)
@@ -127,8 +128,8 @@ def webhook():
 		#print(param['unit-currency']['amount'])
 		budget=param['unit-currency']['amount']
 		res = {"speech":"Please Enter estimated duration of your trip!!!",
-	"displayText":"Please Enter estimated duration of your trip!!!",
-	"source":"ask_time"}
+		"displayText":"Please Enter estimated duration of your trip!!!",
+		"source":"ask_time"}
 		res = json.dumps(res, indent=4)
 		# print(res)
 		r = make_response(res)
@@ -141,29 +142,39 @@ def webhook():
 											"messages": [
 											{
 											"type": 0,
-											"speech": "Welcome to Rajasthan!!!!How may I assist you?",
-											"displayText":"Hello!How may I assist you?"
+											"speech": "Welcome to Course Selector!!!!Here are the courses we provide!!",
+											"displayText":"Welcome to Course Selector!!!!Here are the courses we provide!!"
 											},
 											{
 											"type": 0,
-											"speech": "1.See Nearby Places",
-											"displayText":"1.See Nearby Places"
+											"speech": "1.Machine Learning",
+											"displayText":"1.Machine Learning"
 								
 											},
 											{
 											"type":0,
-											"speech":"2.How to Get There?",
-											"displayText":"2.How to Get There?"
+											"speech":"2.Cyber Security",
+											"displayText":"2.Cyber Security"
 											},
 											{
 											"type":0,
-											"speech":"3.Plan my trip.",
-											"displayText":"3.Plan my trip."
+											"speech":"3.BioInformatics"
+											
 											},
 											{
 											"type":0,
-											"speech":"4.Help Desk",
-											"displayText":"4.Help Desk"
+											"speech":"4.Cryptography"
+										
+											},
+											{
+											"type":0,
+											"speech":"5.Data Structures & Algorithms"
+										
+											},
+											{
+											"type":0,
+											"speech":"Get more information about any course."
+										
 											}
 											],
 											"source": "Default Welcome Intent"
@@ -201,6 +212,111 @@ def webhook():
 								
 											],
 											"source": "reach"
+		}
+		res = json.dumps(res, indent=4)
+	# print(res)
+		r = make_response(res)
+		r.headers['Content-Type'] = 'application/json'
+		return r
+
+
+	#Course ke baare mein info
+	elif(req.get("result").get("action")=="askcourse"):
+		param=req.get("result").get("parameters")
+		method=param["course"]
+
+		desc={'Machine Learning':'ML',
+			'Cryptography':'CR',
+			'Bioinformatics':'BI',
+			'Data Structures & Algorithms':'DSA',
+			'Cyber Security':'CS'}
+		link={'Machine Learning':'ML',
+			'Cryptography':'CR',
+			'Bioinformatics':'BI',
+			'Data Structures & Algorithms':'DSA',
+			'Cyber Security':'CS'}
+				
+
+		res = {"speech": "",
+											"messages": [
+											{
+											"type": 0,
+											"speech": desc[method],
+											
+											},
+											{
+											"type": 0,
+											"speech": link[method],
+											
+											},
+											{
+											"type": 0,
+											"speech":"Please also enter the following details as these will help us make better course suggestions for you!!",
+											
+											},
+											{
+											"type": 0,
+											"speech":"Could you Tell us about your interests!",
+											
+											},
+											
+											],
+											"source": "askcourse"
+		}
+		res = json.dumps(res, indent=4)
+	# print(res)
+		r = make_response(res)
+		r.headers['Content-Type'] = 'application/json'
+		return r
+
+	#askinterest
+	elif(req.get("result").get("action")=="askinterest"):
+		param=req.get("result").get("parameters")
+		interest=param["interest"]
+
+		
+				
+
+		res = {"speech": "",
+											"messages": [
+											{
+											"type": 0,
+											"speech": "Thanks! Also can you also tell us your preferred course duration!",
+											
+											}
+											
+											],
+											"source": "askinterest"
+		}
+		res = json.dumps(res, indent=4)
+	# print(res)
+		r = make_response(res)
+		r.headers['Content-Type'] = 'application/json'
+		return r
+
+	#askduration
+	elif(req.get("result").get("action")=="askduration"):
+		param=req.get("result").get("parameters")
+		duration=param['duration']['amount']
+
+		
+				
+
+		res = {"speech": "",
+											"messages": [
+											{
+											"type": 0,
+											"speech": "Thanks for Providing the info!! You have entered "+interest+"as your area of interest and you want a course for an estimated duration of "+str(duration) + " months" ,
+											
+											},
+											{
+											"type": 0,
+											"speech": "Now you can surf the site so that our automated computer vision model can correctly identify which courses you like! And based on your area of interest and duration required we would suggest you the most appropriate courses." ,
+											
+											}
+											
+											],
+											"source": "askduration"
 		}
 		res = json.dumps(res, indent=4)
 	# print(res)
@@ -457,7 +573,7 @@ def webhook():
 
 
 if __name__ == '__main__':
-    port = int(os.getenv('PORT', 5000))
+    port = int(os.getenv('PORT', 8000))
 
     print("Starting app on port %d" % port)
 
