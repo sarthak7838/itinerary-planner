@@ -66,8 +66,8 @@
     <body>
         <script type=text/javascript>
           var scrolled=0;
-            $(function() {
-                    $('#plan').bind('click', function() {
+            /*$(function() {
+                    $('#plan1').bind('click', function() {
                             var index = $('.fp-section.active').index();
                             var slideIndex = $('.fp-section.active').find('.slide.active').index();
                             $.getJSON('/planit', {
@@ -101,7 +101,7 @@
                                 });
                         });
                     });
-            });
+            });*/
             $(function() {
                     $('#fixedbutton').bind('click', function() {
                             var index = $('.fp-section.active').index();
@@ -113,8 +113,8 @@
                     });
             });
             $(function() {
-                    $('#plan1').bind('click', function() {
-                            $.getJSON('/plan', {
+                    $('#plan').bind('click', function() {
+                            $.getJSON('/todo', {
                                     data: '2'
                                     }, function(data) {
                             });
@@ -225,7 +225,7 @@
                  <ul class="navbar-nav navbar-right mr-auto">
                      <li class="nav-item">
                          <!-- Trigger the modal with a button -->
-                            <button class="btn btn-dark"  id="plan" data-toggle="modal" data-target="#myModal">Decide Courses</button>
+                            <a class="btn btn-dark"  id="plan" href='/todo' ">Decide Courses</a>
 
                      </li>
                  </ul>
@@ -506,22 +506,6 @@
                         });
 
         }
-    $(document).ready(function(){
-
-        $('#wrapper').fullpage();
-        var planitibtn=document.getElementById('plan');
-        var foot=document.getElementById('foot');
-        var fixedbtn=document.getElementById('fixedbutton');
-        planitibtn.onclick=function(){
-            var str=`<a class="btn btn-dark" id="plan1" href='/plan'>Decide Courses</a>`;
-
-                foot.innerHTML=str;
-        };
-        fixedbtn.onclick=function(){
-            var str=`<button type="button" class="btn btn-default" onclick=startthread(this) data-dismiss="modal">Close</button>`;
-            foot.innerHTML=str;
-        };
-    });
 
     </script>
 

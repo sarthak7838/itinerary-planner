@@ -130,7 +130,7 @@ def a():
         change_active(sec_no,slide_no)
         return jsonify({})
 
-@app.route('/plan',methods=['GET','POST'])
+@app.route('/todo',methods=['GET','POST'])
 def b():
     stop_thread()
     if request.method=='GET':
