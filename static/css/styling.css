@@ -101,7 +101,7 @@ nav{
     img{
         width:100%;
         height:600px;
-        border: 5px solid #ff0066;
+        border: 5px solid #0563fc;
         /* position:absolute; */
         /* opacity: 1.0;
      filter: alpha(100); */
@@ -113,19 +113,19 @@ nav{
         color:black;
     }
     .box1{
-        background-color:#ffe6f2;
+        background-color:#aac4ef;
     }
     .box2{
-        background-color: #ffcce5;
+        background-color: #aac4ef;
     }
     .box3{
-        background-color: #ff66ad;
+        background-color: #aac4ef;
     }
     .box4{
-        background-color: #ff3392;
+        background-color: #aac4ef;
     }
     .box5{
-        background-color: #ff0077;
+        background-color: #aac4ef;
     }
     #fixedbutton {
         width:20px;
