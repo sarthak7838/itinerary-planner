@@ -1,122 +1,35 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" dir="ltr">
   <head>
-    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
-    <title>Waypoints in directions</title>
-    <link rel="stylesheet" href="../static/css/styling.css">
-  </head>
-  <body class="disableScroll">
-    <div id="right-panel">
-      <div id="list" style="overflow:auto;height:700px;"></div>
+    <title>Todolist</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+     <link rel="stylesheet" href="../static/css/jquery.fullPage.css">
+<script type=text/javascript>
+  var courses={{courses|safe}};   
+  var done={{done}};   
+</script>
+  <body>
+    <div class="container">
+      <div class="jumbotron">
+        <h1 align="center">Todolist</h1>
+      </div>
+      <input type="text" placeholder="Add Task Name" id="inp"></input>
+      <button class="btn btn-primary" id="add_btn">ADD TASK</button>
+      <br><br><br>
+      <h3>TODO </h3>
+      <hr>
+      <div id="result">
+      </div>
+      <h3> COMPLETED </h3>
+      <hr>
+      <div id="result2">
+      </div>
+      <p>{{courses}} </p>
     </div>
-
-    <div id="map"></div>
-    <script
-          src="https://code.jquery.com/jquery-3.3.0.js"
-          integrity="sha256-TFWSuDJt6kS+huV+vVlyV1jM3dwGdeNWqezhTxXB/X8="
-          crossorigin="anonymous">
-    </script>
-    <script type=text/javascript>
-      var fixed={{fixedpts|safe}};
-      var waypts1={{waypts|safe}};
-      var daycnt={{daycnt|safe}};
-
-      $(function(){
-        window.onbeforeunload = function() {
-            $.getJSON('/null', {
-                                data: ''
-                            }, function(data) {
-                        });
-            return "error";
-        }
-      });
-      // var size = Object.keys(daycnt).length;
-      var str_jaipur="Jaipur is the capital of India’s Rajasthan state. It evokes the royal family that once ruled the region and that, in 1727, founded what is now called the Old City, or “Pink City” for its trademark building color. At the center of its stately street grid (notable in India) stands the opulent, colonnaded City Palace complex.";
-      var str_ajmer="Ajmer is a city in the northern Indian state of Rajasthan. South of the city's artificial Ana Sagar Lake is Ajmer Sharif Dargah, the domed shrine of the Muslim Sufi saint Garib Nawaz. Nearby, a 16th-century palace built by the Mughal emperor Akbar now houses the Ajmer Government Museum, displaying armor and stone sculptures.";
-      var str_jaisalmer="Jaisalmer is a former medieval trading center and a princely state in the western Indian state of Rajasthan, in the heart of the Thar Desert. Known as the Golden City, it's distinguished by its yellow sandstone architecture. Dominating the skyline is Jaisalmer Fort, a sprawling hilltop citadel buttressed by 99 bastions.";
-       var str_jodhpur="Jodhpur is a city in the Thar Desert of the northwest Indian state of Rajasthan.Mehrangarh Fort is a former palace that’s now a museum, displaying weapons, paintings and elaborate royal palanquins (sedan chairs). Set on on a rocky outcrop, the fort overlooks the walled city, where many buildings are painted the city’s iconic shade of blue.";
-       var str_udaipur="Udaipur, formerly the capital of the Mewar Kingdom, is a city in the western Indian state of Rajasthan. Founded by Maharana Udai Singh II in 1559, it’s set around a series of artificial lakes and is known for its lavish royal residences. City Palace, overlooking Lake Pichola, is a monumental complex of 11 palaces, courtyards and gardens, famed for its intricate peacock mosaics.";
-       var str1="Jaipur, Rajasthan, India";
-       var str2="Ajmer, Rajasthan, India";
-       var str3="Udaipur, Rajasthan, India";
-       var str4="Jodhpur, Rajasthan, India";
-       var str5="Jaisalmer, Rajasthan 345001, India";
-       var description={};
-         description[str1]=str_jaipur;
-         description[str2]=str_ajmer;
-         description[str3]=str_udaipur;
-         description[str4]=str_jodhpur;
-         description[str5]=str_jaisalmer;
-
-         var len = 0;
-         for (var o in daycnt) {
-           len++;
-          }
-       //console.log(description.str1);
-      function initMap() {
-        var directionsService = new google.maps.DirectionsService;
-        var directionsDisplay = new google.maps.DirectionsRenderer;
-        var map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 3,
-          center: {lat: 27.02, lng: 74.22}
-        });
-        directionsDisplay.setMap(map);
-        calculateAndDisplayRoute(directionsService, directionsDisplay);
-      }
-      function calculateAndDisplayRoute(directionsService, directionsDisplay) {
-        var waypts = [];
-        for (var i = 0; i < waypts1.length; i++) {
-            waypts.push({
-              location: waypts1[i],
-              stopover: true
-            });
-          //}
-        }
-        directionsService.route({
-          origin: fixed[0],
-          destination: fixed[1],
-          waypoints: waypts,
-          optimizeWaypoints: true,
-          travelMode: 'DRIVING'
-        }, function(response, status) {
-          if (status === 'OK') {
-            directionsDisplay.setDirections(response);
-            var route = response.routes[0];
-            // console.log(route.legs[0].start_address);
-              var str6=route.legs[0].start_address;
-              // console.log(route.legs[0].start_address);
-               var start_cnt=1;
-               var end_cnt=daycnt[str6];
-               //console.log(end_cnt);
-               if(end_cnt!=1){
-                $('#list').append( '<div class="city"><h5 class="place">'+route.legs[0].start_address+'</h5><p>Day '+(start_cnt)+' - Day '+(start_cnt+end_cnt -1)+ '</p><p>'+description[str6]+'</p></div>' );
-              }
-                 else
-                 {$('#list').append( '<div class="city"><h5 class="place">'+route.legs[0].start_address+'</h5><p>Day '+(start_cnt) + '</p><p>'+description[str6]+'</p></div>' );}
-                start_cnt+=end_cnt;
-                if(len>1)
-                {
-                  for (var i = 0; i < route.legs.length; i++) {
-                    $('#list').append( '<p class="route"><b>'+ 'Drive to ' + route.legs[i].end_address + ' :'    +route.legs[i].distance.text + '</b></p>' );
-                    var str7=route.legs[i].end_address;
-                    end_cnt=daycnt[str7];
-                      if(end_cnt!=1)
-                    {$('#list').append( '<div class="city"><h5 class="place">'+route.legs[i].end_address+'</h5><p>Day '+(start_cnt)+' - Day '+(start_cnt+end_cnt -1)+ '</p><p>'+description[str7]+'</p></div>' );}
-                     else {
-                       $('#list').append( '<div class="city"><h5 class="place">'+route.legs[i].end_address+'</h5><p>Day '+(start_cnt) + '</p><p>'+description[str7]+'</p></div>' );
-                   }
-                    start_cnt+=end_cnt;
-                  }
-                }
-            }else {
-            window.alert('Directions request failed due to ' + status);
-          }
-        });
-      }
-    </script>
-    <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAI748dC0b1I8V0_rXYF6THlEiB1QseBBg&callback=initMap">
-    </script>
+    <script src="../static/js/todolist.js"></script>
   </body>
 </html>
