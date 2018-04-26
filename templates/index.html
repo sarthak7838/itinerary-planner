@@ -213,6 +213,7 @@
 
     });
     </script>
+
         <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top ">
             <a class="navbar-brand" href="#">Course Decider</a>
 
@@ -225,7 +226,7 @@
                  <ul class="navbar-nav navbar-right mr-auto">
                      <li class="nav-item">
                          <!-- Trigger the modal with a button -->
-                            <a class="btn btn-dark"  id="plan" href='/todo' ">Decide Courses</a>
+                            <a class="btn btn-dark"  id="plan" href="/todo">Decide Courses</a>
 
                      </li>
                  </ul>
@@ -457,7 +458,7 @@
         </div>
     </div>
     </div>
-    <!-- Udaipur End -->
+    <!-- Data Structures & Algorithms End -->
 </div>
     <div class ="iconclass"><a data-toggle="modal" data-target="#myModal" id="fixedbutton"><i class="fas fa-info-circle" id="icon"></i></a></div>
         <div class="box4">
@@ -506,6 +507,22 @@
                         });
 
         }
+        $(document).ready(function(){
+
+            $('#wrapper').fullpage();
+            // var planitibtn=document.getElementById('plan');
+            // var foot=document.getElementById('foot');
+            // var fixedbtn=document.getElementById('fixedbutton');
+            // planitibtn.onclick=function(){
+            //     var str=`<a class="btn btn-dark" id="plan1" href='/plan'>Plan Itinerary</a>`;
+            //
+            //         foot.innerHTML=str;
+            // };
+            // fixedbtn.onclick=function(){
+            //     var str=`<button type="button" class="btn btn-default" onclick=startthread(this) data-dismiss="modal">Close</button>`;
+            //     foot.innerHTML=str;
+            // };
+        });
 
     </script>
 

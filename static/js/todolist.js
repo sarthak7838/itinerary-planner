@@ -67,7 +67,7 @@ function update(el)
 
 $(document).ready(function(){
               //taskarray = JSON.parse(localStorage.getItem('data')) || [] ;
-              //taskarray=[];
+              taskarray=[];
               var inp=$('#inp');
               var add_btn=$('#add_btn');
               var result=$('#result');
