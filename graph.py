@@ -1,5 +1,13 @@
 city=["Jaipur, Rajasthan", "Jaisalmer, Rajasthan", "Jodhpur, Rajasthan","Ajmer, Rajasthan","Udaipur, Rajasthan"]
 city1=["Jaipur, Rajasthan, India","Jaisalmer, Rajasthan 345001, India", "Jodhpur, Rajasthan, India","Ajmer, Rajasthan, India","Udaipur, Rajasthan, India"]
+name=[
+		['Machine Learning Coursera','Machne Learning, Udacity','Machine Learning Udemy','Machine Learning Class-Central','Machine Learning edX','Master Machine Learning on Python & R','Machine Learning Coding Blocks'],
+		['Introduction to Cyber Security Specialization, Coursera','Cybersecurity and Mobility','Cybersecurity Nanodegree Udacity','The Complete Cyber Security Course : Network Security!','Cyber Security Economics'],
+		['Bioinformatics Specialization,Coursera','Statistical Analysis in Bioinformatics','Tales from the Genome Udacity','Learn Bioinformatics in 6 Days,Udemy'],
+		['Cryptography I','Applied Cryptography Udacity','Mathematical Cryptography - Crack The Code','Blockchain & Cryptography Courses edX'],
+		['Data Structures and Algorithms Specialization,Coursera','Algorithms, Part I','Algorithms, Part II','Intro to Algorithms','Learning Data Structures and Algorithms,Udemy ']
+		
+		]
 dist =[[0, 560, 350, 135,400],
 		[560, 0, 290, 480, 530],
 		[350, 290, 0, 200, 260],
@@ -24,7 +32,7 @@ def suggest(prob_mat):
 	for i in range(0,5):
 		for j in range(0,cnt[i]):
 			if prob_mat[i,j]>0.5:
-				sugg_places.append((i,j))
+				sugg_places.append(name[i][j])
 			if prob_mat[i,j]!=0:
 				prob_arr[i]+=2*prob_mat[i,j]-1
 		if prob_arr[i]>0:
